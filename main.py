@@ -14,10 +14,31 @@ class Application(tk.Frame):
         self.createWidgets()
 
     def select_skin(self):
+        #Find skins
+        folders = {} #skin folder name : fp
+        for root,dirs,files in os.walk(self.skin_dir):
+            for skin_fold in dirs:
+                folders[skin_fold] = os.path.join(root,skin_fold)
         #Create dropdown menu with available skins
 
-        self.skin_mb = tk.Menubutton(self, text="Select skin to make funny", relief=tk.RAISED)
-        self.skin_mb.grid(row=4,column=0)
+        # self.skin_mb = tk.Menubutton(self, text="Select skin to make funny", relief=tk.RAISED)
+        # self.skin_mb.grid(row=4,column=0)
+
+        # self.skin_mb.menu = tk.Menu(self.skin_mb, tearoff=0)
+        # self.skin_mb['menu'] = self.skin_mb.menu
+
+        # #temp: add avail skins
+        # self.skin1 = tk.IntVar()
+        # self.skin_mb.menu.add_checkbutton(label='skin1',variable=self.skin1)
+
+        # #add all skins as option
+        # for skin in folders.keys():
+        #     new_var = tk.IntVar()
+        #     self.skin_mb.menu.add_checkbutton(label=skin,variable=new_var)
+
+        self.skin_list = tk.Listbox(self)
+
+
 
 
     def get_dir(self):
