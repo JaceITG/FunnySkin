@@ -66,6 +66,7 @@ if __name__ == "__main__":
     with open(ini_fp,"r") as f:
         lines = f.readlines()
         hitc_location = os.getcwd()
+        naming_form = "default"
         for l in lines:
             if "HitCirclePrefix" in l:
                 #skin.ini defines a custom hitcircle font location; use this as hitc_location
@@ -75,11 +76,63 @@ if __name__ == "__main__":
                 if defined.strip() == "default":
                     break
                 
-                hitc_location = os.path.join(os.getcwd(),defined)
+                #get tail
+                dirname,naming_form = os.path.split(defined)
+                hitc_location = os.path.join(os.getcwd(),dirname)
                 break
         
         #Tail of hitc_location is the base name of every image
-        print(f"Found hitcircle numbers at {hitc_location}, now editing...")
+        print(f"Found hitcircle numbers at {hitc_location} with naming {naming_form}, now editing...")
+        os.chdir(hitc_location)
+
+        #load in file objects of 2 and 7
+        # two = os.open(os.path.join(hitc_location,f"{naming_form}-2@2x"))
+
+        #walk dir
+        elems = []
+        for root,dirs,files in os.walk(os.getcwd()):
+            #for file in folder
+            for f in files:
+                if not f.startswith(naming_form):
+                    #not a combo number
+                    continue
+                elems.append(f)
+        print(elems)
+
+        # #Add all files of form "{naming_form}-2..." to twos
+        # twos = [e for e in elems if e[len(naming_form)+1]=="2"]
+        # print(twos)
+        # #..and sevens
+        # sevens = [e for e in elems if e[len(naming_form)+1]=="7"]
+        # print(sevens)
+
+        #loop through nums
+        for e in elems:
+            num = int(e[len(naming_form)+1])
+
+            #skip 2 and 7 elems
+            if num==2 or num==7:
+                continue
+            
+
+            new_num = 2
+            #set new number to 7 for odds
+            if num%2 == 1:
+                new_num = 7
+            
+            #get source filename based on format of e (catches @2x versions)
+            copy_src = f"{naming_form}-{new_num}{e[len(naming_form)+2:]}"
+            #print(f"Copying {copy_src} into {e}")
+
+            if not os.path.isfile(copy_src):
+                #2/7 file corresponding to this element does not exist; skip
+                continue
+
+            #copy 2 or 7 into the current element
+            shutil.copy(copy_src,e)
+
+            
+
         
 
 
