@@ -14,7 +14,7 @@ if __name__ == "__main__":
         sys.exit(0)
     
     os.chdir(fp)
-    folders = [] #skin folder name : fp
+    folders = []
     for root,dirs,files in os.walk(os.getcwd()):
         for skin_fold in dirs:
             full_dir = os.path.join(root,skin_fold)
@@ -85,9 +85,6 @@ if __name__ == "__main__":
         print(f"Found hitcircle numbers at {hitc_location} with naming {naming_form}, now editing...")
         os.chdir(hitc_location)
 
-        #load in file objects of 2 and 7
-        # two = os.open(os.path.join(hitc_location,f"{naming_form}-2@2x"))
-
         #walk dir
         elems = []
         for root,dirs,files in os.walk(os.getcwd()):
@@ -97,14 +94,6 @@ if __name__ == "__main__":
                     #not a combo number
                     continue
                 elems.append(f)
-        print(elems)
-
-        # #Add all files of form "{naming_form}-2..." to twos
-        # twos = [e for e in elems if e[len(naming_form)+1]=="2"]
-        # print(twos)
-        # #..and sevens
-        # sevens = [e for e in elems if e[len(naming_form)+1]=="7"]
-        # print(sevens)
 
         #loop through nums
         for e in elems:
@@ -130,6 +119,8 @@ if __name__ == "__main__":
 
             #copy 2 or 7 into the current element
             shutil.copy(copy_src,e)
+        
+        print("Conversion complete!")
 
             
 
